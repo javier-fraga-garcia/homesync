@@ -1,5 +1,5 @@
-import time
 from pathlib import Path
+import asyncio
 import watchdog.events as ev
 from watchdog.observers import Observer
 
@@ -7,8 +7,11 @@ from models import Event, EventType
 
 
 class Handler(ev.FileSystemEventHandler):
-    @staticmethod
-    def on_any_event(event: ev.FileSystemEvent):
+    def __init__(self, loop: asyncio.BaseEventLoop, queue: asyncio.Queue):
+        self.loop = loop
+        self.queue = queue
+
+    def on_any_event(self, event: ev.FileSystemEvent):
 
         if event.is_directory:
             return
@@ -33,22 +36,24 @@ class Handler(ev.FileSystemEventHandler):
         else:
             return
 
+        self.loop.call_soon_threadsafe(self.queue.put_nowait, e)
+
 
 class Watcher:
-    def __init__(self, watch_dir: Path):
+    def __init__(
+        self, watch_dir: Path, loop: asyncio.BaseEventLoop, queue: asyncio.Queue
+    ):
         self.watch_dir = watch_dir
         self.observer = Observer()
+        self.loop = loop
+        self.queue = queue
 
-    def run(self):
+    def start(self):
 
-        handler = Handler()
+        handler = Handler(loop=self.loop, queue=self.queue)
         self.observer.schedule(handler, self.watch_dir, recursive=True)
         self.observer.start()
 
-        try:
-            while True:
-                time.sleep(5)
-        except KeyboardInterrupt:
-            self.observer.stop()
-
+    def stop(self):
+        self.observer.stop()
         self.observer.join()
