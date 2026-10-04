@@ -15,10 +15,7 @@ class Handler(ev.FileSystemEventHandler):
         if event.is_directory:
             return
 
-        if (
-            event.event_type == ev.EVENT_TYPE_CREATED
-            or event.event_type == ev.EVENT_TYPE_MODIFIED
-        ):
+        if event.event_type == ev.EVENT_TYPE_MODIFIED:
             e = Event(
                 src_path=event.src_path, event_type=EventType.MODIFIED, dest_path=None
             )
