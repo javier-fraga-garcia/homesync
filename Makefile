@@ -13,3 +13,6 @@ fix:
 
 run-client: 
 	uv run python -m homesync.client.main
+
+run-server:
+	uv run python -m homesync.server.main
