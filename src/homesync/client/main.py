@@ -6,7 +6,6 @@ from homesync.client.worker import Worker
 
 
 async def main():
-
     watch_dir = pathlib.Path.home() / "Escritorio" / "testdir"
     loop = asyncio.get_event_loop()
     queue = asyncio.Queue(maxsize=50)

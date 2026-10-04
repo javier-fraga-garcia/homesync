@@ -12,7 +12,6 @@ class Handler(ev.FileSystemEventHandler):
         self.queue = queue
 
     def on_any_event(self, event: ev.FileSystemEvent):
-
         if event.is_directory:
             return
 
@@ -49,7 +48,6 @@ class Watcher:
         self.queue = queue
 
     def start(self):
-
         handler = Handler(loop=self.loop, queue=self.queue)
         self.observer.schedule(handler, self.watch_dir, recursive=True)
         self.observer.start()
