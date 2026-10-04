@@ -3,7 +3,7 @@ import asyncio
 import watchdog.events as ev
 from watchdog.observers import Observer
 
-from models import Event, EventType
+from homesync.client.models import Event, EventType
 
 
 class Handler(ev.FileSystemEventHandler):

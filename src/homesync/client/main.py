@@ -1,8 +1,8 @@
 import pathlib
 import asyncio
 
-from watcher import Watcher
-from worker import Worker
+from homesync.client.watcher import Watcher
+from homesync.client.worker import Worker
 
 
 async def main():

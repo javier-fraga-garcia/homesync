@@ -1,6 +1,6 @@
 import asyncio
 
-from models import Event
+from homesync.client.models import Event
 
 
 class Worker:
