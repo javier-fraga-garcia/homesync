@@ -1,5 +1,5 @@
 from enum import Enum
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
 class EventType(Enum):
@@ -8,8 +8,7 @@ class EventType(Enum):
     MOVED = "moved"
 
 
-@dataclass
-class Event:
+class Event(BaseModel):
     src_path: str
     event_type: EventType
-    dest_path: str | None
+    dest_path: str | None = None
